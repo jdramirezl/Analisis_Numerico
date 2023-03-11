@@ -22,17 +22,12 @@ int n;
 vector<vector<long long> > dist;
 
 int main(){
-    string s;
     cin >> n;
     dist.resize(n, vector<long long>(n));
-    vector<pair<long, long> > coord(n);
     int node;
     for(int i = 0; i < n; ++i){
-        cin >> node >> coord[i].first >> coord[i].second;
-    }
-    for(int i = 0; i < n; ++i){
         for(int j = 0; j < n; ++j){
-            dist[i][j] = abs(coord[i].first - coord[j].first) + abs(coord[i].second - coord[j].second);
+            cin >> dist[i][j];
         }
     }
 
