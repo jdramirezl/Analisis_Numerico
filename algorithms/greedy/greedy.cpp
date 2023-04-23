@@ -66,3 +66,29 @@ int greedy(vector<vector<int>> &graph) {
 
     return path.size() < n ? -1 : cost;
 }
+
+
+int main(int argc, char** argv){
+    freopen(argv[1], "r", stdin);
+    cin >> n;
+
+    // Getting matrix
+    vector<vector<int>> matrix(n, vector<int>(n));
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < n; ++j){
+            cin >> matrix[i][j];
+        }
+    }
+
+    // To graph
+    vector<vector<int>> graph(n);
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < n; ++j){
+            if(matrix[i][j] == 1){
+                graph[i].push_back(j);
+            }
+        }
+    }
+
+    cout << greedy(graph) << '\n';
+}
