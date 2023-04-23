@@ -3,9 +3,9 @@ import subprocess
 
 adjecency_graph_folder = './adjecency_graph/'
 
-output_directory = './output/bruteForce/'
+output_directory = './output/greedy/'
 
-script = "./algorithms/bruteForce/bruteForce"
+script = "./algorithms/greedy/greedy.exe"
 
 for file in os.listdir(adjecency_graph_folder):
     with open(f"{output_directory}{file}", "w") as outfile:

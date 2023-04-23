@@ -15,6 +15,8 @@
 #include <array>
 #include <set>
 #include <numeric>
+#include <chrono>
+#include <unordered_set>
 
 using namespace std;
 
@@ -23,6 +25,7 @@ using namespace std;
 struct edge{
     ll u, v, w;
     edge(ll _u, ll _v, ll _w) : u(_u), v(_v), w(_w) {}
+    edge() : u(0), v(0), w(0) {}
     bool operator<(const edge &other) const {
         return w < other.w;
     }
@@ -40,17 +43,21 @@ ll find(ll u) {
 bool merge(ll u, ll v) {
     u = find(u), v = find(v);
     if (u == v) return false;
-    parent[u] = v;
+    // parent[u] = v;
     return true;
 }
 
 ll greedy(vector<vector<ll> > &graph) {
-    vector<edge> path;
     ll cost = 0;
+    edges = vector<edge>(m);
 
-    for (auto &v : graph) {
-        for (auto &u : v) {
-            edges.push_back(edge(v[0], u, 0));
+    unordered_set<ll> used;
+
+    for (ll i = 0; i < graph.size(); i++) {
+        for (ll j = 0; j < graph[i].size(); j++) {
+            if (graph[i][j] == 0) continue;
+            if (i == j) continue;
+            edges.push_back(edge(i, j, graph[i][j]));
         }
     }
 
@@ -58,8 +65,7 @@ ll greedy(vector<vector<ll> > &graph) {
     m = edges.size();
 
     parent = vector<ll>(n + 1);
-    degree = vector<ll>(n + 1);
-    edges = vector<edge>(m);
+    degree = vector<ll>(n + 1, 0);
 
     sort(edges.begin(), edges.end());
 
@@ -67,28 +73,61 @@ ll greedy(vector<vector<ll> > &graph) {
         parent[i] = i;
     }
 
+    vector<edge> path;
+    // cout << "M: " << m << '\n';
     for (ll i = 0; i < m; i++) {
-        if (path.size() == n) break;
+        if (path.size() == n) break;    
 
         edge e = edges[i];
-
+        // cout << i << "| Edge: " << e.u << " " << e.v << " " << e.w << '\n';
+        // if (used.count(e.u)) continue;
         if (!merge(e.u, e.v)) continue;
-
-        if (degree[e.u] < 2 && degree[e.v] < 2) {
+        // cout << "Passed! 1\n";
+        // cout << "Merge: " << e.u << " " << e.v << '\n';
+        // cout << "Degree of " << e.u << ": " << degree[e.u] << '\n';
+        // cout << "Degree of " << e.v << ": " << degree[e.v] << '\n';
+        // cout << (degree[e.u] < 2) << " " << (degree[e.v] < 2) << '\n';
+        if ((degree[e.u] < 2) && (degree[e.v] < 2)) {
+            // cout << "Passed! 2" << '\n';
+            // used.insert(e.u);
+            parent[e.u] = e.v;
             degree[e.u]++;
             degree[e.v]++;
             cost += e.w;
             path.push_back(e);
         }
+        // // print path 
+        // cout << "Path::\n";
+        // for(ll i = 0; i < path.size(); ++i){
+        //     cout << path[i].u << " " << path[i].v << ", ";
+        // }
+        // cout << '\n';
     }
 
-    return path.size() < n ? -1 : cost;
+    // // print parent
+    // for(ll i = 0; i < n; ++i){
+    //     cout << i << ":" << parent[i] << ", ";
+    // }
+    // cout << '\n';
+
+    // cout << "Path: " << path.size() << '\n';
+    // cout << "Cost: " << cost << '\n';
+    // cout << "N: " << n << '\n';
+    // // print path 
+        // cout << "Path::\n";
+        // for(ll i = 0; i < path.size(); ++i){
+        //     cout << path[i].u << " " << path[i].v << ", ";
+        // }
+        // cout << '\n';
+    return path.size() < n - 1 ? -1 : cost;
 }
 
 
-int main(ll argc, char** argv){
+int main(int argc, char** argv){
     freopen(argv[1], "r", stdin);
+    // freopen("../../adjecency_graph/burma14.tsp", "r", stdin);
     cin >> n;
+    // cout << "Init N: " << n << '\n';
 
     // Getting matrix
     vector<vector<ll>> matrix(n, vector<ll>(n));
@@ -98,17 +137,8 @@ int main(ll argc, char** argv){
         }
     }
 
-    // To graph
-    vector<vector<ll>> graph(n);
-    for(ll i = 0; i < n; ++i){
-        for(ll j = 0; j < n; ++j){
-            if(matrix[i][j] == 1){
-                graph[i].push_back(j);
-            }
-        }
-    }
     auto start_time = std::chrono::high_resolution_clock::now();
-    ll ans = greedy(graph);
+    ll ans = greedy(matrix);
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::duration<double> >(end_time - start_time);
     cout << ans << '\n' << "Time: " << elapsed_time.count() << '\n';
