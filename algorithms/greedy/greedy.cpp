@@ -1,34 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define ll long long
 
 struct edge{
-    int u, v, w;
-    edge(int _u, int _v, int _w) : u(_u), v(_v), w(_w) {}
+    ll u, v, w;
+    edge(ll _u, ll _v, ll _w) : u(_u), v(_v), w(_w) {}
     bool operator<(const edge &other) const {
         return w < other.w;
     }
 };
 
-const int MAXN = 1e5 + 5;
-vector<int> parent, degree;
+const ll MAXN = 1e5 + 5;
+vector<ll> parent, degree;
 vector<edge> edges;
-int n, m;
+ll n, m;
 
-int find(int u) {
+ll find(ll u) {
     return parent[u] == u ? u : parent[u] = find(parent[u]);
 }
 
-bool merge(int u, int v) {
+bool merge(ll u, ll v) {
     u = find(u), v = find(v);
     if (u == v) return false;
     parent[u] = v;
     return true;
 }
 
-int greedy(vector<vector<int>> &graph) {
+ll greedy(vector<vector<ll>> &graph) {
     vector<edge> path;
-    int cost = 0;
+    ll cost = 0;
 
     for (auto &v : graph) {
         for (auto &u : v) {
@@ -39,17 +40,17 @@ int greedy(vector<vector<int>> &graph) {
     n = graph.size();
     m = edges.size();
 
-    parent = vector<int>(n + 1);
-    degree = vector<int>(n + 1);
+    parent = vector<ll>(n + 1);
+    degree = vector<ll>(n + 1);
     edges = vector<edge>(m);
 
     sort(edges.begin(), edges.end());
 
-    for(int i = 0; i <= n; i++){
+    for(ll i = 0; i <= n; i++){
         parent[i] = i;
     }
 
-    for (int i = 0; i < m; i++) {
+    for (ll i = 0; i < m; i++) {
         if (path.size() == n) break;
 
         edge e = edges[i];
@@ -68,22 +69,22 @@ int greedy(vector<vector<int>> &graph) {
 }
 
 
-int main(int argc, char** argv){
+int main(ll argc, char** argv){
     freopen(argv[1], "r", stdin);
     cin >> n;
 
     // Getting matrix
-    vector<vector<int>> matrix(n, vector<int>(n));
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < n; ++j){
+    vector<vector<ll>> matrix(n, vector<ll>(n));
+    for(ll i = 0; i < n; ++i){
+        for(ll j = 0; j < n; ++j){
             cin >> matrix[i][j];
         }
     }
 
     // To graph
-    vector<vector<int>> graph(n);
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < n; ++j){
+    vector<vector<ll>> graph(n);
+    for(ll i = 0; i < n; ++i){
+        for(ll j = 0; j < n; ++j){
             if(matrix[i][j] == 1){
                 graph[i].push_back(j);
             }
