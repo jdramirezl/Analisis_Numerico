@@ -8,7 +8,7 @@ using namespace std;
 const long long INF = 1e18;
 
 int n;
-vector<vector<long long>> graph;
+vector<vector<long long> > graph;
 int niterMax=1e6;
 long long tsp()
 {
@@ -22,7 +22,7 @@ long long tsp()
     int iter=0;
     do
     {
-        iter+=1;
+        iter++;
         string path;
         long long cost = 0;
         int src = vertices[0];
@@ -61,10 +61,14 @@ int main(int argc, char const *argv[])
         }
     }
 
-    long long minCost = tsp();
+    
 
     
-    cout << "Minimum cost: " << minCost << endl;
+    auto start_time = std::chrono::high_resolution_clock::now();
+    long long ans = tsp();
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto elapsed_time = std::chrono::duration_cast<std::chrono::duration<double> >(end_time - start_time);
+    cout << ans << '\n' << "Time: " << elapsed_time.count() << '\n';
 
     return 0;
 }
