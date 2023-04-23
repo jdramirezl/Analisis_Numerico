@@ -1,4 +1,21 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <map>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream> // istringstream buffer(myString);
+#include <stack>
+#include <algorithm>
+#include <cstring>
+#include <cassert>
+#include <math.h>
+#include <unordered_map>
+#include <queue>
+#include <array>
+#include <set>
+#include <numeric>
+
 using namespace std;
 
 #define ll long long
@@ -27,7 +44,7 @@ bool merge(ll u, ll v) {
     return true;
 }
 
-ll greedy(vector<vector<ll>> &graph) {
+ll greedy(vector<vector<ll> > &graph) {
     vector<edge> path;
     ll cost = 0;
 
@@ -90,6 +107,9 @@ int main(ll argc, char** argv){
             }
         }
     }
-
-    cout << greedy(graph) << '\n';
+    auto start_time = std::chrono::high_resolution_clock::now();
+    ll ans = greedy(graph);
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto elapsed_time = std::chrono::duration_cast<std::chrono::duration<double> >(end_time - start_time);
+    cout << ans << '\n' << "Time: " << elapsed_time.count() << '\n';
 }
