@@ -17,6 +17,7 @@ for file in os.listdir(test_case_folder):
         continue
     print(file)
     problem = tsplib95.load(test_case_folder + file)
+    
 
     with open(adjecency_graph_folder + file, "w") as file:
         file.write(str(num) + '\n')

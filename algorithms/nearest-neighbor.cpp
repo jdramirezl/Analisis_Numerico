@@ -42,11 +42,22 @@ long long nearestNeighborFromNode(int node, int& start){
 long long nearestNeighbor(){
     long long minCircuit = INF;
     for(int i = 0; i < n; ++i){
+        fill(visited.begin(), visited.end(), false);
         minCircuit = min(minCircuit, nearestNeighborFromNode(i, i));
     }
     return minCircuit;
 }
 
-int main(){
-    
+int main(int argc, char** argv){
+    freopen(argv[1], "r", stdin);
+    cin >> n;
+    dist.resize(n, vector<long long>(n));
+    visited.resize(n, false);
+    int node;
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < n; ++j){
+            cin >> dist[i][j];
+        }
+    }
+    cout << nearestNeighbor() << '\n';
 }
