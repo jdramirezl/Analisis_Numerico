@@ -43,7 +43,6 @@ ll find(ll u) {
 bool merge(ll u, ll v) {
     u = find(u), v = find(v);
     if (u == v) return false;
-    // parent[u] = v;
     return true;
 }
 
@@ -74,60 +73,27 @@ ll greedy(vector<vector<ll> > &graph) {
     }
 
     vector<edge> path;
-    // cout << "M: " << m << '\n';
     for (ll i = 0; i < m; i++) {
         if (path.size() == n) break;    
 
         edge e = edges[i];
-        // cout << i << "| Edge: " << e.u << " " << e.v << " " << e.w << '\n';
-        // if (used.count(e.u)) continue;
         if (!merge(e.u, e.v)) continue;
-        // cout << "Passed! 1\n";
-        // cout << "Merge: " << e.u << " " << e.v << '\n';
-        // cout << "Degree of " << e.u << ": " << degree[e.u] << '\n';
-        // cout << "Degree of " << e.v << ": " << degree[e.v] << '\n';
-        // cout << (degree[e.u] < 2) << " " << (degree[e.v] < 2) << '\n';
         if ((degree[e.u] < 2) && (degree[e.v] < 2)) {
-            // cout << "Passed! 2" << '\n';
-            // used.insert(e.u);
             parent[e.u] = e.v;
             degree[e.u]++;
             degree[e.v]++;
             cost += e.w;
             path.push_back(e);
         }
-        // // print path 
-        // cout << "Path::\n";
-        // for(ll i = 0; i < path.size(); ++i){
-        //     cout << path[i].u << " " << path[i].v << ", ";
-        // }
-        // cout << '\n';
     }
 
-    // // print parent
-    // for(ll i = 0; i < n; ++i){
-    //     cout << i << ":" << parent[i] << ", ";
-    // }
-    // cout << '\n';
-
-    // cout << "Path: " << path.size() << '\n';
-    // cout << "Cost: " << cost << '\n';
-    // cout << "N: " << n << '\n';
-    // // print path 
-        // cout << "Path::\n";
-        // for(ll i = 0; i < path.size(); ++i){
-        //     cout << path[i].u << " " << path[i].v << ", ";
-        // }
-        // cout << '\n';
     return path.size() < n - 1 ? -1 : cost;
 }
 
 
 int main(int argc, char** argv){
     freopen(argv[1], "r", stdin);
-    // freopen("../../adjecency_graph/burma14.tsp", "r", stdin);
     cin >> n;
-    // cout << "Init N: " << n << '\n';
 
     // Getting matrix
     vector<vector<ll>> matrix(n, vector<ll>(n));
