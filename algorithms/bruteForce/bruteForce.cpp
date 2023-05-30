@@ -23,21 +23,18 @@ long long tsp()
     do
     {
         iter++;
-        string path;
         long long cost = 0;
         int src = vertices[0];
         
-        path+=to_string(src);
         for (int i = 1; i < vertices.size(); i++)
         {
             
             int dest = vertices[i];
-           path += "->" + to_string(dest);
             cost += graph[src][dest];
             src = dest;
         }
         cost += graph[src][vertices[0]];
-        path += "->" + to_string(vertices[0]);
+        
         if (minCost > cost)
             minCost = cost;
         
